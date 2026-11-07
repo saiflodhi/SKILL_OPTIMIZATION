@@ -373,8 +373,11 @@ function runLinter(files) {
         results.pylint = null;
       } else {
         const result = runLinterCommand(pylintPath, ['--output-format=text', ...pyFiles]);
+        // Pylint's exit code is a bitmask (1=fatal, 2=error, 4=warning, 8=refactor,
+        // 16=convention, 32=usage error); only fatal/error bits should block a commit.
+        const status = typeof result.status === 'number' ? result.status : 1;
         results.pylint = {
-          success: result.status === 0,
+          success: (status & 0x23) === 0,
           output: commandOutput(result)
         };
       }

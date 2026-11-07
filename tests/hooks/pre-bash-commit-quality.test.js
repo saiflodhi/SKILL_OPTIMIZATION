@@ -511,7 +511,7 @@ if (test('handles hash-prefixed python comments and string false-positives', () 
       '# debugger',
       '# TODO: python unreferenced',
       '# TODO: python issue #456',
-      'const str = "# TODO: string false positive";', // Greptile string limitation
+      'str_literal = "# TODO: string false positive"', // Greptile string limitation; valid Python so pylint doesn't block on a syntax error
       ''
     ].join('\n'));
     
